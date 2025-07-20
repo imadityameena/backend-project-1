@@ -1,30 +1,31 @@
-import express from "express"
-import cors from "cors"
-import cookieParser from "cookie-parser"
+// Import required packages
+import express from "express"         // Main framework for building APIs
+import cors from "cors"               // Middleware to allow frontend-backend communication
+import cookieParser from "cookie-parser" // Middleware to read cookies from requests
 
-// Create an instance of an Express app
+// Create an Express app instance
 const app = express()
 
-// Enable CORS (Cross-Origin Resource Sharing) with:
-// - `origin`: the allowed frontend origin, usually from environment variable
-// - `credentials: true`: allows cookies and authorization headers to be sent
+// Enable Cross-Origin Resource Sharing (CORS)
+// This allows the frontend (from another domain or port) to talk to this backend
 app.use(cors({
-  origin: process.env.CORS_ORIGIN,
-  credentials: true
+  origin: process.env.CORS_ORIGIN,  // Only allow requests from this origin (usually your frontend URL)
+  credentials: true                 // Allow cookies, tokens, or headers to be sent in requests
 }))
 
-// Middleware to parse incoming JSON payloads (up to 16kb in size)
+// Middleware to accept JSON data from requests
+// Limit is set to 16kb to avoid huge data uploads
 app.use(express.json({ limit: "16kb" }))
 
-// Middleware to parse URL-encoded form data (also with 16kb limit)
-// `extended: true` allows nested objects (rich objects) in form data
+// Middleware to accept form submissions (URL-encoded data)
+// `extended: true` allows form data to contain nested objects
 app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 
-// Serve static files (like images, CSS, JS) from the "public" directory
+// Serve static files (images, HTML, CSS, JS) from the "public" folder
 app.use(express.static("public"))
 
-// Middleware to parse cookies from the incoming request headers
+// Middleware to read cookies from incoming HTTP requests
 app.use(cookieParser())
 
-// Export the app instance so it can be used elsewhere (like in your main server file)
+// Export the app so it can be used in another file like index.js or server.js
 export { app }
