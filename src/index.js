@@ -2,10 +2,9 @@
 import express from 'express';
 import connectDB from './db/index.js';
 import dotenv from 'dotenv';
+import {app} from './app.js'
 
 
-
-const app = express();
 
 
 dotenv.config({
@@ -33,6 +32,8 @@ connectDB()
 
 //This is a basic approach to connnect database but not professional
 /*
+//
+const app = express();
 ( async () => {
   try {
     await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)

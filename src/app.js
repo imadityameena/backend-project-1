@@ -1,31 +1,30 @@
-// Import required packages
-import express from "express"         // Main framework for building APIs
-import cors from "cors"               // Middleware to allow frontend-backend communication
-import cookieParser from "cookie-parser" // Middleware to read cookies from requests
+import express from "express"           // Express framework
+import cors from "cors"                 // For cross-origin requests
+import cookieParser from "cookie-parser" // To parse cookies
 
-// Create an Express app instance
 const app = express()
 
-// Enable Cross-Origin Resource Sharing (CORS)
-// This allows the frontend (from another domain or port) to talk to this backend
 app.use(cors({
-  origin: process.env.CORS_ORIGIN,  // Only allow requests from this origin (usually your frontend URL)
-  credentials: true                 // Allow cookies, tokens, or headers to be sent in requests
+  origin: process.env.CORS_ORIGIN,     // Allow requests from this origin
+  credentials: true                    // Send cookies with requests
 }))
 
-// Middleware to accept JSON data from requests
-// Limit is set to 16kb to avoid huge data uploads
-app.use(express.json({ limit: "16kb" }))
+app.use(express.json({ limit: "16kb" }))       // Parse JSON (limit: 16kb)
+app.use(express.urlencoded({ extended: true, limit: "16kb" })) // Parse form data
+app.use(express.static("public"))              // Serve static files
+app.use(cookieParser())                        // Parse cookies
 
-// Middleware to accept form submissions (URL-encoded data)
-// `extended: true` allows form data to contain nested objects
-app.use(express.urlencoded({ extended: true, limit: "16kb" }))
 
-// Serve static files (images, HTML, CSS, JS) from the "public" folder
-app.use(express.static("public"))
+//router import
 
-// Middleware to read cookies from incoming HTTP requests
-app.use(cookieParser())
+import userRouter from './routes/user.routes.js'
 
-// Export the app so it can be used in another file like index.js or server.js
+
+//routes declaration
+
+app.use("/api/v1/users", userRouter)
+
+
+//http://localhost:8000/api/v1/users/register
+
 export { app }
