@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser" // To parse cookies
 
 const app = express()
 
+
+
 app.use(cors({
   origin: process.env.CORS_ORIGIN,     // Allow requests from this origin
   credentials: true                    // Send cookies with requests
