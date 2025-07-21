@@ -1,28 +1,21 @@
-// A custom class to handle API errors in a consistent way
+// Custom class to handle API errors
 class ApiError extends Error {
   constructor(
-    statuscode,                      // HTTP status code (like 400, 404, 500)
-    message = "Something went wrong", // Default error message if none is given
-    errors = [],                     // Optional list of extra error details (like validation errors)
-    stack = ""                       // Optional stack trace (for debugging)
+    statuscode,                      // HTTP status code
+    message = "Something went wrong", // Default error message
+    errors = [],                     // Extra error details
+    stack = ""                       // Optional stack trace
   ) {
-    super(message); // Call the built-in Error class with the message
+    super(message);                 // Call base Error class
 
-    this.statuscode = statuscode; // Set the HTTP status code
-    this.data = null;             // Set data to null (since it's an error)
-    this.message = message;      // Set the error message again (for clarity)
-    this.success = false;        // Always false, since this is an error
-    this.errors = errors;        // Save any extra error info (e.g. invalid fields)
+    this.statuscode = statuscode;  // Set status code
+    this.data = null;              // No data on error
+    this.message = message;        // Set error message
+    this.success = false;          // Always false
+    this.errors = errors;          // Save extra errors
 
-    // If a custom stack trace is given, use it
-    if (stack) {
-      this.stack = stack;
-    } else {
-      // Otherwise, automatically generate a stack trace
-      Error.captureStackTrace(this, this.constructor);
-    }
+    this.stack = stack || Error.captureStackTrace(this, this.constructor); // Stack trace
   }
 }
 
-// Export the ApiError class so it can be used elsewhere
-export { ApiError }
+export { ApiError };               // Export the class
